@@ -1,34 +1,51 @@
 // Java for System Function Imports
 import java.io.File;
-import java.nio.file.Path;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 // Java Imports
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
+import javax.swing.JOptionPane;
+
+/**
+ * The FileOrganizer class is responsible for organizing files into specific folders based on their file extensions.
+ * It searches for files in a specified directory and moves them to categorized folders.
+ *
+ * @author Chriscent Pingol
+ * @version v.1.0
+ * p.s - I put little comments ["//"] all over the code because I tend to forget how it all works again...
+ * p.p.s - It's a memory thing...
+ */
 
 public class FileOrganizer {
     private static String directoryPath;
 
     public static void main(String[] args) {
         // Specify the directory path
-        String fileOrganizerName = "FileOrganizer.jar";
-        File file = searchFile(new File(System.getProperty("user.dir")), fileOrganizerName);
-        String absolutePath = file.getAbsolutePath();
+        String path = FileOrganizer.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+        File file = new File(path);
+        String jarDir = file.getParentFile().getAbsolutePath();
+        directoryPath = String.format("%s\\organizeFolder", jarDir);
 
-        // Error Message in the Terminal
+        // Error Message as Popup
         if (file != null) {
-
-            System.out.println("Absolute Path: " + absolutePath);
+            showPopup("Absolute Path: " + directoryPath);
         } else {
-            System.out.println("File not found.");
+            showErrorPopup("File not found.");
         }
 
-        File parentDirectory = file.getParentFile();
-        directoryPath = String.format("%s\\organizeFolder", parentDirectory);
-
         directoryChecker(directoryPath);
+        showPopup("File Organizer Complete!\nCheck the folder to see your organized files!");
     }
+
+    /**
+     * Checks the specified directory path and organizes the files within the directory.
+     * If the specified path points to a valid directory, it retrieves the list of files and processes them.
+     * Each file is then passed to the extension sorter for categorization and subsequent moving.
+     *
+     * @param directoryPath the path of the directory to be checked and organized
+     */
 
     public static void directoryChecker(String directoryPath) {
         // Create a File object representing the directory
@@ -39,24 +56,18 @@ public class FileOrganizer {
             // Retrieve the list of files in the directory
             File[] files = directory.listFiles();
             fileProcessor(files);
-
         } else {
-            System.out.println("Invalid directory path: " + directoryPath);
+            showErrorPopup("Invalid directory path: " + directoryPath);
         }
     }
 
-    // System.out.prints each file in the directory
-    // Kind of like a debugger to check the contents inside.
     public static void fileProcessor(File[] files) {
-        // Process each file in the directory
         if (files != null) {
             for (File file : files) {
                 if (file.isFile()) {
-                    // Retrieve the file name's extension for sorting
                     String fileName = file.getName();
                     String fileExtension = getFileExtension(fileName);
-
-                    System.gc(); //DELETE THIS!!!
+                    System.gc(); // DELETE THIS!!!
                     extensionSorter(fileExtension, file);
                 }
             }
@@ -89,7 +100,6 @@ public class FileOrganizer {
         if (fileExtensions.containsKey(fileExtension)) {
             String category = fileExtensions.get(fileExtension);
             folderChecker(category, file);
-
         }
     }
 
@@ -101,12 +111,12 @@ public class FileOrganizer {
 
         // Check if the folder exists
         if (!folder.exists() || !folder.isDirectory()) {
-            // Folder doesn't exist, create it
+            // If Folder doesn't exist, create it
             boolean created = folder.mkdir();
             if (created) {
-                System.out.println("Folder created: " + folderPath);
+                showPopup("Folder created:\t" + category);
             } else {
-                System.out.println("Failed to create folder: " + folderPath);
+                showErrorPopup("Failed to create folder: " + folderPath);
             }
         } else {
             System.out.printf("\nFolder is already created: %s", category);
@@ -126,7 +136,7 @@ public class FileOrganizer {
                 Files.move(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING);
                 System.out.println("\nFile moved successfully: " + file.getName());
             } catch (Exception e) {
-                System.out.println("\nFailed to move file: " + file.getName());
+                showErrorPopup("Failed to move file: " + file.getName());
                 e.printStackTrace();
             }
         }
@@ -144,21 +154,11 @@ public class FileOrganizer {
         return "";
     }
 
-    public static File searchFile(File directory, String fileName) {
-        File[] files = directory.listFiles();
+    public static void showPopup(String message) {
+        JOptionPane.showMessageDialog(null, message);
+    }
 
-        if (files != null) {
-            for (File file : files) {
-                if (file.isDirectory()) {
-                    File result = searchFile(file, fileName);
-                    if (result != null) {
-                        return result;
-                    }
-                } else if (file.isFile() && file.getName().equals(fileName)) {
-                    return file;
-                }
-            }
-        }
-        return null;
+    public static void showErrorPopup(String errorMessage) {
+        JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
     }
 }
