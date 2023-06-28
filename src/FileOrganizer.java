@@ -26,7 +26,7 @@ public class FileOrganizer {
         String path = FileOrganizer.class.getProtectionDomain().getCodeSource().getLocation().getPath();
         File file = new File(path);
         String jarDir = file.getParentFile().getAbsolutePath();
-        directoryPath = String.format("%s\\organizeFolder", jarDir);
+        directoryPath = String.format("%s\\organizerFolder", jarDir);
 
         // Error Message as Popup
         if (file != null) {
@@ -81,10 +81,18 @@ public class FileOrganizer {
         fileExtensions.put("jpg",   "Images");
         fileExtensions.put("jpeg",  "Images");
         fileExtensions.put("gif",   "Images");
+        fileExtensions.put("jfif",  "Images");
+        fileExtensions.put("aae",   "Images");
+        fileExtensions.put("ico",   "Images");
+        fileExtensions.put("webp",   "Images");
         fileExtensions.put("doc",   "Documents");
         fileExtensions.put("docx",  "Documents");
-        fileExtensions.put("pptx",   "Documents");
+        fileExtensions.put("pptx",  "Documents");
+        fileExtensions.put("psd",   "Documents");
         fileExtensions.put("txt",   "Documents");
+        fileExtensions.put("log",   "Documents");
+        fileExtensions.put("vtt",   "Documents");
+        fileExtensions.put("torrent","Documents");
         fileExtensions.put("csv",   "Data");
         fileExtensions.put("xlsx",  "Data");
         fileExtensions.put("zip",   "Archives");
@@ -96,6 +104,7 @@ public class FileOrganizer {
         fileExtensions.put("avi",   "Videos");
         fileExtensions.put("flv",   "Videos");
         fileExtensions.put("wmv",   "Videos");
+        fileExtensions.put("mov",   "Videos");
 
         if (fileExtensions.containsKey(fileExtension)) {
             String category = fileExtensions.get(fileExtension);

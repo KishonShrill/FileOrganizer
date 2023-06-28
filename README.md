@@ -59,6 +59,11 @@ Before you open the app, download the latest Java version [here](https://www.jav
 
 Can't open file - "A java exception has occurred"
 - [Install](http://www.oracle.com/technetwork/java/javase/downloads/index.html) or Upgrade the [latest jdk version](http://www.oracle.com/technetwork/java/javase/downloads/index.html). You can upgrade it by uninstalling the older version from control panel and installing newer version of jdk. Get the new version [here (Oracle Java)](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
+  - First, click the link above to access the website
+  - Scroll down until you see __Linus, macOS, Windows.__ Pick one that suits your computer.
+  - Click the link that says "x64 Installer"
+  - Open the installer and follow the instructions.
+  - Once downloaded, try to open the application. See if it works...
 
 ---
 
